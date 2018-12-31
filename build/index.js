@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.actionNames = exports.combinePartialReducers = exports.partialReducer = void 0;
+exports.mergeReducers = exports.createPartialReducer = exports.actionTypes = exports.THREE_STATE_ACTION = void 0;
 
 var _utils = require("./utils");
 
@@ -19,20 +19,38 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-// partialReducer :: (Object, Action, Object (* -> State))
-var partialReducer = function partialReducer(subType, _ref, obj) {
-  var _ref$type = _ref.type,
-      type = _ref$type === void 0 ? '' : _ref$type,
-      payload = _ref.payload;
-  var typeName = (0, _utils.last)(type.split('/'));
-  if (type === subType.action([typeName]) && subType.has(typeName) && !!obj[typeName]) return obj[typeName](payload);
-  return obj._(payload);
-}; // combinePartialReducers :: (...Reducer) -> Reducer
+var THREE_STATE_ACTION = ['PENDING', 'SUCCESS', 'FAILURE']; // actionTypes :: Object [String] -> Object Object String
+
+exports.THREE_STATE_ACTION = THREE_STATE_ACTION;
+
+var actionTypes = function actionTypes(names) {
+  return (0, _utils.toTuplePairs)(names).reduce(function (obj, _ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        key = _ref2[0],
+        actions = _ref2[1];
+
+    return _objectSpread({}, obj, _defineProperty({}, key, (0, _utils.groupSubActions)(key, actions)));
+  }, {});
+}; // createPartialReducer :: (Object, Action, Object (* -> State))
 
 
-exports.partialReducer = partialReducer;
+exports.actionTypes = actionTypes;
 
-var combinePartialReducers = function combinePartialReducers() {
+var createPartialReducer = function createPartialReducer(subType, getReducerPattern) {
+  return function (state, action) {
+    var pattern = getReducerPattern(state, action);
+    var type = action.type,
+        payload = action.payload;
+    var actionName = (0, _utils.last)(type.split('/'));
+    if (type === subType.action([actionName]) && subType.has(actionName) && !!pattern[actionName]) return pattern[actionName](payload);
+    return pattern._ ? pattern._(payload) : state;
+  };
+}; // mergeReducers :: (...Reducer) -> Reducer
+
+
+exports.createPartialReducer = createPartialReducer;
+
+var mergeReducers = function mergeReducers() {
   for (var _len = arguments.length, reducers = new Array(_len), _key = 0; _key < _len; _key++) {
     reducers[_key] = arguments[_key];
   }
@@ -42,19 +60,6 @@ var combinePartialReducers = function combinePartialReducers() {
       return reducer(newState, action);
     }, state);
   };
-}; // actionNames :: Object [String] -> Object Object String
-
-
-exports.combinePartialReducers = combinePartialReducers;
-
-var actionNames = function actionNames(names) {
-  return (0, _utils.toTuplePairs)(names).reduce(function (obj, _ref2) {
-    var _ref3 = _slicedToArray(_ref2, 2),
-        key = _ref3[0],
-        actions = _ref3[1];
-
-    return _objectSpread({}, obj, _defineProperty({}, key, (0, _utils.groupSubActions)(key, actions)));
-  }, {});
 };
 
-exports.actionNames = actionNames;
+exports.mergeReducers = mergeReducers;

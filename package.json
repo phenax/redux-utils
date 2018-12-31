@@ -4,6 +4,7 @@
   "description": "Utility functions and patterns to work with redux",
   "main": "index.js",
   "repository": "https://github.com/phenax/redux-utils",
+  "homepage": "https://github.com/phenax/redux-utils",
   "author": "Akshay Nair <phenax5@gmail.com>",
   "license": "MIT",
   "keywords": [

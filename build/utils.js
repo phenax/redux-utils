@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.groupSubActions = exports.defaultTypes = exports.getActionName = exports.toTuplePairs = exports.last = void 0;
+exports.groupSubActions = exports.ActionType = exports.getActionName = exports.toTuplePairs = exports.last = exports.DEFAULT = void 0;
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
@@ -17,11 +17,14 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-var DEFAULT = '$$DEFAULT';
+var DEFAULT = '$$'; // last :: [a] -> a
+
+exports.DEFAULT = DEFAULT;
 
 var last = function last(a) {
   return a[a.length - 1];
-};
+}; // toTuplePairs :: Object a -> (String, a)
+
 
 exports.last = last;
 
@@ -36,13 +39,13 @@ exports.toTuplePairs = toTuplePairs;
 
 var getActionName = function getActionName(name, nest) {
   var prefix = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '@';
-  return "".concat(prefix).concat(name.toLowerCase(), "/").concat(nest ? nest.join('/') : DEFAULT);
-}; // defaultTypes :: (String, [String], [String]) -> ActionType
+  return "".concat(prefix).concat(name.toLowerCase(), "/").concat(nest && nest.length ? nest.join('/') : DEFAULT);
+}; // ActionType :: (String, [String], [String]) -> ActionType
 
 
 exports.getActionName = getActionName;
 
-var defaultTypes = function defaultTypes(name, nest, subTypes) {
+var ActionType = function ActionType(name, nest, subTypes) {
   return {
     _: getActionName(name, _toConsumableArray(nest || []).concat([DEFAULT])),
     is: function is(type) {
@@ -58,16 +61,16 @@ var defaultTypes = function defaultTypes(name, nest, subTypes) {
 }; // groupSubActions :: (String, [String]) -> ActionType
 
 
-exports.defaultTypes = defaultTypes;
+exports.ActionType = ActionType;
 
 var groupSubActions = function groupSubActions(name, types) {
   return Array.isArray(types) ? types.reduce(function (obj, k) {
     return _objectSpread({}, obj, _defineProperty({}, k, obj.action([k])));
-  }, defaultTypes(name, [], types)) : Object.keys(types).reduce(function (obj, k) {
+  }, ActionType(name, [], types)) : Object.keys(types).reduce(function (obj, k) {
     return _objectSpread({}, obj, _defineProperty({}, k, types[k].reduce(function (o, action) {
       return _objectSpread({}, o, _defineProperty({}, action, o.action([action])));
-    }, defaultTypes(name, [k], types[k]))));
-  }, defaultTypes(name, [], Object.keys(types)));
+    }, ActionType(name, [k], types[k]))));
+  }, ActionType(name, [], Object.keys(types)));
 };
 
 exports.groupSubActions = groupSubActions;
