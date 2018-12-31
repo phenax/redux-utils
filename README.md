@@ -28,6 +28,7 @@ import { actionNames, createPartialReducer, mergeReducers } from '@phenax/redux-
 
 #### Create resource based action types
 `actionTypes` function works on a simple convention of `@resource/ACTION/STATE`. Borrowed it from the REST world.
+`THREE_STATE_ACTION` is just an array of 3 common states `['PENDING', 'SUCCESS', 'FAILURE']`
 
 ```js
 import { actionTypes, THREE_STATE_ACTION } from '@phenax/redux-utils';
