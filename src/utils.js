@@ -1,14 +1,17 @@
-const DEFAULT = '$$DEFAULT';
+export const DEFAULT = '$$';
 
+// last :: [a] -> a
 export const last = a => a[a.length - 1];
+
+// toTuplePairs :: Object a -> (String, a)
 export const toTuplePairs = obj => Object.keys(obj).map(k => [ k, obj[k] ]);
 
 // getActionName :: (String, [String], String) -> String
 export const getActionName = (name, nest, prefix = '@') =>
-  `${prefix}${name.toLowerCase()}/${nest ? nest.join('/') : DEFAULT}`;
+  `${prefix}${name.toLowerCase()}/${nest && nest.length ? nest.join('/') : DEFAULT}`;
 
-// defaultTypes :: (String, [String], [String]) -> ActionType
-export const defaultTypes = (name, nest, subTypes) => ({
+// ActionType :: (String, [String], [String]) -> ActionType
+export const ActionType = (name, nest, subTypes) => ({
   _: getActionName(name, [...(nest || []), DEFAULT]),
   is: type => getActionName(name, nest).indexOf(type) === 0,
   has: subType => subTypes.indexOf(subType) !== -1,
@@ -19,13 +22,13 @@ export const defaultTypes = (name, nest, subTypes) => ({
 export const groupSubActions = (name, types) => Array.isArray(types)
   ? types.reduce(
     (obj, k) => ({ ...obj, [k]: obj.action([k]) }),
-    defaultTypes(name, [], types)
+    ActionType(name, [], types)
   )
   : Object.keys(types).reduce((obj, k) => ({
     ...obj,
     [k]: types[k].reduce(
       (o, action) => ({ ...o, [action]: o.action([action]) }),
-      defaultTypes(name, [k], types[k])
+      ActionType(name, [k], types[k])
     ),
-  }), defaultTypes(name, [], Object.keys(types)));
+  }), ActionType(name, [], Object.keys(types)));
 
