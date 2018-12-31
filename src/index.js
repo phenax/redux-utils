@@ -14,7 +14,7 @@ export const partialReducer = (subType, { type = '', payload }, obj) => {
 export const combinePartialReducers = (...reducers) => (state, action) =>
   reducers.reduce((newState, reducer) => reducer(newState, action), state);
 
-// actionNames :: Object [String] -> Object Object String
-export const actionNames = names =>
+// actionTypes :: Object [String] -> Object Object String
+export const actionTypes = names =>
   toTuplePairs(names)
     .reduce((obj, [ key, actions ]) => ({ ...obj, [key]: groupSubActions(key, actions) }), {});
