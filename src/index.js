@@ -1,13 +1,17 @@
 import { last, toTuplePairs, groupSubActions } from './utils';
 
-// partialReducer :: (Object, Action, Object (* -> State))
-export const partialReducer = (subType, { type = '', payload }, obj) => {
-  const typeName = last(type.split('/'));
+export const THREE_STATE_ACTION = ['REQUEST', 'SUCCESS', 'FAILURE'];
 
-  if(type === subType.action([ typeName ]) && subType.has(typeName) && !!obj[typeName])
-    return obj[typeName](payload);
+// createPartialReducer :: (Object, Action, Object (* -> State))
+export const createPartialReducer = (subType, getReducerPattern) => (state, action) => {
+  const pattern = getReducerPattern(state, action);
+  const { type, payload } = action;
+  const actionName = last(type.split('/'));
 
-  return obj._(payload);
+  if(type === subType.action([ actionName ]) && subType.has(actionName) && !!pattern[actionName])
+    return pattern[actionName](payload);
+
+  return pattern._ ? pattern._(payload) : state;
 };
 
 // combinePartialReducers :: (...Reducer) -> Reducer
