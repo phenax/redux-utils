@@ -2,6 +2,11 @@ import { last, toTuplePairs, groupSubActions } from './utils';
 
 export const THREE_STATE_ACTION = ['PENDING', 'SUCCESS', 'FAILURE'];
 
+// actionTypes :: Object [String] -> Object Object String
+export const actionTypes = names =>
+  toTuplePairs(names)
+    .reduce((obj, [ key, actions ]) => ({ ...obj, [key]: groupSubActions(key, actions) }), {});
+
 // createPartialReducer :: (Object, Action, Object (* -> State))
 export const createPartialReducer = (subType, getReducerPattern) => (state, action) => {
   const pattern = getReducerPattern(state, action);
@@ -17,8 +22,3 @@ export const createPartialReducer = (subType, getReducerPattern) => (state, acti
 // mergeReducers :: (...Reducer) -> Reducer
 export const mergeReducers = (...reducers) => (state, action) =>
   reducers.reduce((newState, reducer) => reducer(newState, action), state);
-
-// actionTypes :: Object [String] -> Object Object String
-export const actionTypes = names =>
-  toTuplePairs(names)
-    .reduce((obj, [ key, actions ]) => ({ ...obj, [key]: groupSubActions(key, actions) }), {});
