@@ -36,8 +36,8 @@ jobs:
       # run tests!
       - run: yarn test:ci
 
-      # - run:
-      #     name: Coverage
-      #     command: yarn coverage:ci
-      #     environment:
-      #       CODECOV_TOKEN: 1cc28c23-ea43-4955-8260-f5ccf2a08823
+      - run:
+          name: Coverage
+          command: yarn coverage:ci
+          environment:
+            CODECOV_TOKEN: cb357dc9-7594-4609-8647-1c75fa6a6ea7
