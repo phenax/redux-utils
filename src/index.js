@@ -1,6 +1,6 @@
 import { last, toTuplePairs, groupSubActions } from './utils';
 
-export const THREE_STATE_ACTION = ['REQUEST', 'SUCCESS', 'FAILURE'];
+export const THREE_STATE_ACTION = ['PENDING', 'SUCCESS', 'FAILURE'];
 
 // createPartialReducer :: (Object, Action, Object (* -> State))
 export const createPartialReducer = (subType, getReducerPattern) => (state, action) => {
