@@ -1,4 +1,4 @@
-import { last, toTuplePairs, getActionName, ActionType } from '../src/utils';
+import { last, toTuplePairs, getActionName, groupSubActions, ActionType } from '../src/utils';
 
 
 describe('last', () => {
@@ -99,5 +99,24 @@ describe('ActionType', () => {
       expect(actionType.is('@users/ADD')).toBe(true);
       expect(actionType.is('@users/ADD/SUCCESS')).toBe(true);
     });
+  });
+});
+
+describe('groupSubActions', () => {
+  it('should append actions if they have no sub-state', () => {
+    const resource = groupSubActions('HELLO', [ 'ADD', 'LIST' ]);
+    expect(resource.ADD).toBe('@hello/ADD');
+    expect(resource.LIST).toBe('@hello/LIST');
+  });
+
+  it('should append actions as ActionType instances if they have sub-state', () => {
+    const resource = groupSubActions('HELLO', {
+      ADD: [ 'SUCCESS', 'REQUEST', 'FAILURE' ],
+      LIST: [ 'SUCCESS', 'REQUEST', 'FAILURE' ],
+    });
+    expect(resource.ADD._).toBe('@hello/ADD/$$');
+    expect(resource.LIST._).toBe('@hello/LIST/$$');
+    expect(resource.ADD.is('@hello/ADD')).toBe(true);
+    expect(resource.LIST.is('@hello/LIST')).toBe(true);
   });
 });
