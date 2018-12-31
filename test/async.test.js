@@ -50,7 +50,7 @@ describe('toPromiseResponse', () => {
       .then(cata({
         Success: done,
         Failure: e => {
-          // expect(e).toBe('Hello world');
+          expect(e).toBe('Hello world');
           done();
         },
       }));
