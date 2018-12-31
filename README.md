@@ -28,7 +28,8 @@ import { actionNames, createPartialReducer, mergeReducers } from '@phenax/redux-
 
 ### Create resource based action types
 `actionTypes` function works on a simple convention of `@resource/ACTION/STATE`. Borrowed it from the REST world.
-`THREE_STATE_ACTION` is just an array of 3 common states `['PENDING', 'SUCCESS', 'FAILURE']`
+
+`THREE_STATE_ACTION` is just an array of the 3 action states `['PENDING', 'SUCCESS', 'FAILURE']`
 
 ```js
 import { actionTypes, THREE_STATE_ACTION } from '@phenax/redux-utils';
@@ -77,3 +78,23 @@ import { mergeReducers } from '@phenax/redux-utils';
 const userReducer = mergeReducers(addUserReducer, listUserReducer);
 ```
 
+
+## Usage with redux-saga and crocks
+
+```js
+import { put } from 'redux-saga/effects';
+import { callAsync } from '@phenax/redux-utils/saga';
+
+// fetchUsers :: Params -> Async [User]
+
+function* listUsersSaga({ payload: { params } }) {
+  yield put(({ type: types.USERS.LIST.SUCCESS, payload: data }));
+
+  const response = yield callAsync(fetchUsers, params);
+
+  yield put(response.cata({
+    Success: userList => ({ type: types.USERS.LIST.SUCCESS, payload: userList }),
+    Failure: error => ({ type: types.USERS.LIST.FAILURE, payload: error })
+  }));
+}
+```
