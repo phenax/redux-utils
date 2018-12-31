@@ -14,8 +14,8 @@ export const createPartialReducer = (subType, getReducerPattern) => (state, acti
   return pattern._ ? pattern._(payload) : state;
 };
 
-// combinePartialReducers :: (...Reducer) -> Reducer
-export const combinePartialReducers = (...reducers) => (state, action) =>
+// mergeReducers :: (...Reducer) -> Reducer
+export const mergeReducers = (...reducers) => (state, action) =>
   reducers.reduce((newState, reducer) => reducer(newState, action), state);
 
 // actionTypes :: Object [String] -> Object Object String
