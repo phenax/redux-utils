@@ -37,3 +37,67 @@ describe('getActionName', () => {
     expect(getActionName('HELLO_WORLD', ['ADD', 'SUCCESS'], '$$')).toBe('$$hello_world/ADD/SUCCESS');
   });
 });
+
+describe('ActionType', () => {
+  describe('constructor', () => {
+    it('should return object with _ property with default action for resources', () => {
+      const actionType = ActionType('HELLO', [], []);
+      expect(actionType._).toBe('@hello/$$');
+    });
+
+    it('should return object with _ property with default action for actions', () => {
+      const actionType = ActionType('HELLO', ['ADD'], ['SUCCESS', 'FAILURE', 'REQUEST']);
+      expect(actionType._).toBe('@hello/ADD/$$');
+    });
+
+    it('should return object with _ property with default action for action states', () => {
+      const actionType = ActionType('HELLO', ['ADD', 'SUCCESS'], []);
+      expect(actionType._).toBe('@hello/ADD/SUCCESS/$$');
+    });
+  });
+
+  describe('#has', () => {
+    it('should return true for state valid values for resource', () => {
+      const actionType = ActionType('HELLO', [], ['ADD', 'LIST']);
+      expect(actionType.has('ADD')).toBe(true);
+      expect(actionType.has('LIST')).toBe(true);
+      expect(actionType.has('SHIT')).toBe(false);
+    });
+
+    it('should return true for state valid values for actions', () => {
+      const actionType = ActionType('HELLO', ['ADD'], ['SUCCESS', 'FAILURE', 'REQUEST']);
+      expect(actionType.has('SUCCESS')).toBe(true);
+      expect(actionType.has('FAILURE')).toBe(true);
+      expect(actionType.has('REQUEST')).toBe(true);
+      expect(actionType.has('SHIT')).toBe(false);
+    });
+
+    it('should return false for everything for action states', () => {
+      const actionType = ActionType('HELLO', ['ADD', 'SUCCESS'], []);
+      expect(actionType.has('SUCCESS')).toBe(false);
+      expect(actionType.has('FAILURE')).toBe(false);
+      expect(actionType.has('REQUEST')).toBe(false);
+      expect(actionType.has('SHIT')).toBe(false);
+    });
+  });
+
+  describe('#is', () => {
+    it('should return true for state valid values for resources', () => {
+      const usersActionType = ActionType('USERS', [], []);
+
+      expect(usersActionType.is('@users')).toBe(true);
+    });
+
+    it('should return false for everything for actions', () => {
+      const actionType = ActionType('USERS', ['ADD'], ['SUCCESS', 'FAILURE', 'REQUEST']);
+      expect(actionType.is('@users')).toBe(true);
+      expect(actionType.is('@users/ADD')).toBe(true);
+    });
+
+    it('should return false for everything for action states', () => {
+      const actionType = ActionType('USERS', ['ADD', 'SUCCESS'], []);
+      expect(actionType.is('@users/ADD')).toBe(true);
+      expect(actionType.is('@users/ADD/SUCCESS')).toBe(true);
+    });
+  });
+});
