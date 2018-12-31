@@ -2,15 +2,15 @@
 # Redux Utils
 Utility functions and patterns to work with redux and reduce some of the boilerplate involved
 
-<!-- [![CircleCI](https://img.shields.io/circleci/project/github/phenax/pipey/master.svg?style=for-the-badge)](https://circleci.com/gh/phenax/pipey)
-[![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/pipey.svg?style=for-the-badge)](https://www.npmjs.com/package/pipey)
-[![Codecov](https://img.shields.io/codecov/c/github/phenax/pipey.svg?style=for-the-badge)](https://codecov.io/gh/phenax/pipey) -->
+[![CircleCI](https://img.shields.io/circleci/project/github/phenax/@phenax/redux-utils/master.svg?style=for-the-badge)](https://circleci.com/gh/phenax/@phenax/redux-utils)
+[![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@phenax/redux-utils.svg?style=for-the-badge)](https://www.npmjs.com/package/@phenax/redux-utils)
+[![Codecov](https://img.shields.io/codecov/c/github/phenax/@phenax/redux-utils.svg?style=for-the-badge)](https://codecov.io/gh/phenax/@phenax/redux-utils)
 
 [Read the documentation for more information](https://github.com/phenax/pipey/tree/master/docs)
 
 ## Install
 
-#### To add the project to your project
+### To add the project to your project
 ```bash
 yarn add @phenax/redux-utils
 ```
@@ -20,13 +20,13 @@ The patterns and utility functions this library exposes are just a collection of
 
 ## Usage
 
-#### Import it to your file
+### Import it to your file
 ```js
 import { actionNames, createPartialReducer, mergeReducers } from '@phenax/redux-utils';
 ```
 
 
-#### Create resource based action types
+### Create resource based action types
 `actionTypes` function works on a simple convention of `@resource/ACTION/STATE`. Borrowed it from the REST world.
 `THREE_STATE_ACTION` is just an array of 3 common states `['PENDING', 'SUCCESS', 'FAILURE']`
 
@@ -47,7 +47,7 @@ dispatch({ type: types.USERS.ADD.SUCCESS, payload: {/* stuff */} });
 ```
 
 
-#### Create a partial reducer
+### Create a partial reducer
 `createPartialReducer` function can be used to create reducers that only act on actions on that resource. For example a dispatch of type `types.USERS.LIST.SUCCESS` will not affect anything inside a partial reducer for `types.USERS.ADD`.
 Also the reason for choosing an object over switch case statements is that it will promote using smaller functions inside your reducers for a more composable.
 
@@ -66,7 +66,7 @@ const addUserReducer = createPartialReducer(types.USERS.ADD, (state = initialSta
 ```
 
 
-#### Merge your partial reducers togather
+### Merge your partial reducers togather
 `mergeReducers` function will allow you to merge/compose all the partial action reducers that you have created into one resource reducer. It will merge your reducers from LEFT-to-RIGHT but that shouldn't matter as any dispatch should only affect one partial reducer.
 
 Note: Some may find this pattern very restrictive and that was the intention but mergeReducers is a generic function so the argument being passed doesn't have to be a partial reducer. So you can add a reducer with the good old switch-case statement in there.
