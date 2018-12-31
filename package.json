@@ -1,7 +1,7 @@
 {
   "name": "@phenax/redux-utils",
   "version": "0.0.0",
-  "description": "Utility functions to reduce boilerplate in writing redux actions",
+  "description": "Utility functions and patterns to work with redux",
   "main": "index.js",
   "repository": "https://github.com/phenax/redux-utils",
   "author": "Akshay Nair <phenax5@gmail.com>",
