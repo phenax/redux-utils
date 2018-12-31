@@ -1,9 +1,5 @@
-import Async from 'crocks/Async';
 import { cata, withResponse, toPromiseResponse } from '../src/async';
-
-const afterDelayOf = (delay, isRej, fn) =>
-  Async((rej, res) => setTimeout(isRej ? rej : res, delay))
-    .bimap(fn, fn);
+import { afterDelayOf } from './utils';
 
 describe('withResponse', () => {
   const delayedHello = (data, isRej) => withResponse(afterDelayOf(300, isRej, () => data));
