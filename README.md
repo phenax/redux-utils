@@ -2,9 +2,9 @@
 # Redux Utils
 Utility functions and patterns to work with redux and reduce some of the boilerplate involved
 
-[![CircleCI](https://img.shields.io/circleci/project/github/phenax/@phenax/redux-utils/master.svg?style=for-the-badge)](https://circleci.com/gh/phenax/@phenax/redux-utils)
+[![CircleCI](https://img.shields.io/circleci/project/github/phenax/redux-utils/master.svg?style=for-the-badge)](https://circleci.com/gh/phenax/redux-utils)
 [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@phenax/redux-utils.svg?style=for-the-badge)](https://www.npmjs.com/package/@phenax/redux-utils)
-[![Codecov](https://img.shields.io/codecov/c/github/phenax/@phenax/redux-utils.svg?style=for-the-badge)](https://codecov.io/gh/phenax/@phenax/redux-utils)
+[![Codecov](https://img.shields.io/codecov/c/github/phenax/redux-utils.svg?style=for-the-badge)](https://codecov.io/gh/phenax/redux-utils)
 
 [Read the documentation for more information](https://github.com/phenax/pipey/tree/master/docs)
 
