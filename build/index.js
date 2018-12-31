@@ -41,9 +41,15 @@ var createPartialReducer = function createPartialReducer(subType, getReducerPatt
     var pattern = getReducerPattern(state, action);
     var type = action.type,
         payload = action.payload;
-    var actionName = (0, _utils.last)(type.split('/'));
+    var actionName = (0, _utils.last)("".concat(type || '').split('/'));
+
+    var fallback = function fallback() {
+      return pattern._ ? pattern._(payload) : state;
+    };
+
+    if (!type || !actionName) return fallback();
     if (type === subType.action([actionName]) && subType.has(actionName) && !!pattern[actionName]) return pattern[actionName](payload);
-    return pattern._ ? pattern._(payload) : state;
+    return fallback();
   };
 }; // mergeReducers :: (...Reducer) -> Reducer
 

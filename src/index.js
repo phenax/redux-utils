@@ -11,12 +11,16 @@ export const actionTypes = names =>
 export const createPartialReducer = (subType, getReducerPattern) => (state, action) => {
   const pattern = getReducerPattern(state, action);
   const { type, payload } = action;
-  const actionName = last(type.split('/'));
+  const actionName = last(`${type || ''}`.split('/'));
+
+  const fallback = () => pattern._ ? pattern._(payload) : state;
+
+  if(!type || !actionName) return fallback();
 
   if(type === subType.action([ actionName ]) && subType.has(actionName) && !!pattern[actionName])
     return pattern[actionName](payload);
 
-  return pattern._ ? pattern._(payload) : state;
+  return fallback();
 };
 
 // mergeReducers :: (...Reducer) -> Reducer
