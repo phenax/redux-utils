@@ -1,4 +1,4 @@
-const DEFAULT = 'DEFAULT';
+const DEFAULT = '$$DEFAULT';
 
 export const last = a => a[a.length - 1];
 export const toTuplePairs = obj => Object.keys(obj).map(k => [ k, obj[k] ]);
