@@ -1,20 +1,7 @@
 import { fromPromise } from 'crocks/Async';
 
-import { taggedSum, cata } from './index';
+import { Response } from './index';
 
-export const Response = taggedSum('Response', {
-  Success: ['data'],
-  Failure: ['error'],
-}, {
-  map: fn => cata({
-    Success: data => Response.Success(fn(data)),
-    Failure: Response.Failure,
-  }),
-  mapFailure: fn => cata({
-    Success: Response.Success,
-    Failure: error => Response.Failure(fn(error)),
-  }),
-});
 
 // withResponse :: Async a -> Async.Resolved (Response a)
 export const withResponse = task => task.coalesce(Response.Failure, Response.Success);

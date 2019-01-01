@@ -27,36 +27,23 @@ export const createPartialReducer = (subType, getReducerPattern) => (state, acti
 export const mergeReducers = (...reducers) => (state, action) =>
   reducers.reduce((newState, reducer) => reducer(newState, action), state);
 
-
-const typeName = (name, key) => `${name}.${key}`;
-
 // taggedSum :: (String, Object [String]) -> SumType
 export const taggedSum = (name, types, methods) => ({
   is: type => type && (type === name || type[TYPE] === name) || false,
   ...Object.keys(types).reduce((acc, key) => ({
     ...acc,
-    [key]: (...data) => {
-      const instance = {
-        [TYPE]: typeName(name, key),
-        cata: p => typeof p[key] === 'function'
-          ? p[key](...data)
-          : p._(...data),
-        is: type => type && (
-          type === name ||
-          type === typeName(name, key) ||
-          type[TYPE] === typeName(name, key)
-        ) || false,
+    [key]: (...args) => {
+      const self = {
+        [TYPE]: `${name}.${key}`,
+        cata: p => (p[key] || p._)(...args),
       };
 
-      if (!methods) return instance;
-
-      return {
-        ...instance,
-        ...Object.keys(methods)
-          .reduce((acc, key) => ({
-            ...acc,
-            [key]: (...args) => methods[key](...args)(instance),
-          }), {}),
+      return !methods ? self : {
+        ...self,
+        ...Object.keys(methods).reduce((acc, key) => ({
+          ...acc,
+          [key]: (...args) => methods[key](...args)(self),
+        }), {}),
       };
     },
   }), { [TYPE]: name }),
@@ -64,3 +51,18 @@ export const taggedSum = (name, types, methods) => ({
 
 // cata :: Object (...a -> b) -> Catamorphism a -> b
 export const cata = p => t => t.cata(p);
+
+// data Response = Success * | Failure Error
+export const Response = taggedSum('Response', {
+  Success: ['data'],
+  Failure: ['error'],
+}, {
+  map: fn => cata({
+    Success: data => Response.Success(fn(data)),
+    Failure: Response.Failure,
+  }),
+  mapFailure: fn => cata({
+    Success: Response.Success,
+    Failure: error => Response.Failure(fn(error)),
+  }),
+});
