@@ -1,6 +1,6 @@
 {
   "name": "@phenax/redux-utils",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Utility functions and patterns to work with redux",
   "main": "index.js",
   "repository": "https://github.com/phenax/redux-utils",
