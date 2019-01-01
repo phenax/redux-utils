@@ -1,7 +1,5 @@
 import { actionTypes } from '../src';
 
-const toJsonObject = obj => JSON.parse(JSON.stringify(obj));
-
 describe('actionTypes', () => {
 
   it('should build action types tree', () => {
@@ -13,25 +11,23 @@ describe('actionTypes', () => {
       STUFF: [ 'C', 'D' ],
     });
 
-    expect(toJsonObject(types)).toEqual({
-      'USERS': {
-        '_': '@users/$$',
-        'ADD': {
-          '_': '@users/ADD/$$',
-          'A': '@users/ADD/A',
-          'B': '@users/ADD/B'
-        },
-        'DELETE': {
-          '_': '@users/DELETE/$$',
-          'A': '@users/DELETE/A',
-          'B': '@users/DELETE/B'
-        }
-      },
-      'STUFF': {
-        '_': '@stuff/$$',
-        'C': '@stuff/C',
-        'D': '@stuff/D'
-      }
-    });
+    expect(types.USERS).toBeDefined();
+    expect(types.USERS._).toBe('@users/$$');
+    
+    expect(types.USERS.ADD).toBeDefined();
+    expect(types.USERS.ADD._).toBe('@users/ADD/$$');
+    expect(types.USERS.ADD.A).toBe('@users/ADD/A');
+    expect(types.USERS.ADD.B).toBe('@users/ADD/B');
+    
+    expect(types.USERS.DELETE).toBeDefined();
+    expect(types.USERS.DELETE._).toBe('@users/DELETE/$$');
+    expect(types.USERS.DELETE.A).toBe('@users/DELETE/A');
+    expect(types.USERS.DELETE.B).toBe('@users/DELETE/B');
+
+    expect(types.STUFF).toBeDefined();
+    expect(types.STUFF._).toBe('@stuff/$$');
+    expect(types.STUFF.A).toBeUndefined();
+    expect(types.STUFF.C).toBe('@stuff/C');
+    expect(types.STUFF.D).toBe('@stuff/D');
   });
 });
