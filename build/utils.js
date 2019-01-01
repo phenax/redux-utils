@@ -47,7 +47,7 @@ exports.getActionName = getActionName;
 
 var ActionType = function ActionType(name, nest, subTypes) {
   return {
-    _: getActionName(name, _toConsumableArray(nest || []).concat([DEFAULT])),
+    _: getActionName(name, [].concat(_toConsumableArray(nest || []), [DEFAULT])),
     is: function is(type) {
       return getActionName(name, nest).indexOf(type) === 0;
     },
@@ -55,7 +55,7 @@ var ActionType = function ActionType(name, nest, subTypes) {
       return subTypes.indexOf(subType) !== -1;
     },
     action: function action(subNest) {
-      return getActionName(name, _toConsumableArray(nest).concat(_toConsumableArray(subNest)));
+      return getActionName(name, [].concat(_toConsumableArray(nest), _toConsumableArray(subNest)));
     }
   };
 }; // groupSubActions :: (String, [String]) -> ActionType

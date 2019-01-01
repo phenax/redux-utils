@@ -22,7 +22,7 @@ The patterns and utility functions this library exposes are just a collection of
 
 ### Import it to your file
 ```js
-import { actionNames, createPartialReducer, mergeReducers } from '@phenax/redux-utils';
+import { actionTypes, THREE_STATE_ACTION, createPartialReducer, mergeReducers } from '@phenax/redux-utils';
 ```
 
 

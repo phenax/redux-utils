@@ -47,8 +47,8 @@ var cata = function cata(p) {
 
 
 exports.cata = cata;
-var fetchJson = (0, _Async.fromPromise)(function (url, req) {
-  return fetch(url, req).then(function (res) {
+var fetchJson = (0, _Async.fromPromise)(function () {
+  return fetch.apply(void 0, arguments).then(function (res) {
     return res.json();
   });
 });
