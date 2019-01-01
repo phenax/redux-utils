@@ -22,6 +22,18 @@ describe('taggedSum', () => {
     expect(T.B).toBeInstanceOf(Function);
   });
 
+  it('should identify its type with `is`', () => {
+    const T = taggedSum('T', { A: [] });
+    const a = T.A();
+
+    expect(T.is('T')).toBe(true);
+    expect(a.is('T')).toBe(true);
+    expect(a.is('T.A')).toBe(true);
+    expect(a.is('T.B')).toBe(false);
+    expect(a.is('8273yrwisfehd')).toBe(false);
+    expect(a.is()).toBe(false);
+  });
+
   describe('#cata', () => {
     it('should create the required constructors on the object', () => {
       const T = taggedSum('T', { A: [], B: [] });

@@ -36,7 +36,8 @@ export const taggedSum = (name, types) => ({
       [TYPE]: key,
       cata: p => typeof p[key] === 'function'
         ? p[key](...data)
-        : p._(...data)
+        : p._(...data),
+      is: type => type === name || type === `${name}.${key}`,
     }),
   }), { [TYPE]: name }),
 });
