@@ -31,20 +31,33 @@ export const mergeReducers = (...reducers) => (state, action) =>
 const typeName = (name, key) => `${name}.${key}`;
 
 // taggedSum :: (String, Object [String]) -> SumType
-export const taggedSum = (name, types) => ({
+export const taggedSum = (name, types, methods) => ({
   is: type => type && (type === name || type[TYPE] === name) || false,
   ...Object.keys(types).reduce((acc, key) => ({
     ...acc,
-    [key]: (...data) => ({
-      [TYPE]: typeName(name, key),
-      cata: p => typeof p[key] === 'function'
-        ? p[key](...data)
-        : p._(...data),
-      is: type => type && (
-        type === name ||
-        type === typeName(name, key) ||
-        type[TYPE] === typeName(name, key)
-      ) || false,
-    }),
+    [key]: (...data) => {
+      const instance = {
+        [TYPE]: typeName(name, key),
+        cata: p => typeof p[key] === 'function'
+          ? p[key](...data)
+          : p._(...data),
+        is: type => type && (
+          type === name ||
+          type === typeName(name, key) ||
+          type[TYPE] === typeName(name, key)
+        ) || false,
+      };
+
+      if (!methods) return instance;
+
+      return {
+        ...instance,
+        ...Object.keys(methods)
+          .reduce((acc, key) => ({
+            ...acc,
+            [key]: (...args) => methods[key](...args)(instance),
+          }), {}),
+      };
+    },
   }), { [TYPE]: name }),
 });
