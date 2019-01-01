@@ -20,4 +20,4 @@ export const toPromiseResponse = fn => (...args) => toPromise(withResponse(fn(..
 export const cata = p => t => t.cata(p);
 
 // fetchJson :: (String, Request) -> Async *
-export const fetchJson = fromPromise((url, req) => fetch(url, req).then(res => res.json()));
+export const fetchJson = fromPromise((...args) => fetch(...args).then(res => res.json()));
