@@ -6,7 +6,7 @@ Utility functions and patterns to work with redux and reduce some of the boilerp
 [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@phenax/redux-utils.svg?style=for-the-badge)](https://www.npmjs.com/package/@phenax/redux-utils)
 [![Codecov](https://img.shields.io/codecov/c/github/phenax/redux-utils.svg?style=for-the-badge)](https://codecov.io/gh/phenax/redux-utils)
 
-[Read the documentation for more information](https://github.com/phenax/pipey/tree/master/docs)
+[Read the documentation for more information](https://github.com/phenax/redux-utils/tree/master/docs)
 
 ## Install
 
@@ -16,7 +16,7 @@ yarn add @phenax/redux-utils
 ```
 
 ## Motivation
-The patterns and utility functions this library exposes are just a collection of solutions to problems that I've faced while working with redux. The most common one being the frequently repeated convention of using the three states, _REQUEST/_PENDING, _SUCCESS and _FAILURE for most, if not all of the actions being dispatched.
+The patterns and utility functions this library exposes are just a collection of solutions to problems that I've faced while working with redux. The most common one being the frequently repeated convention of using the three states, _REQUEST/_PENDING, _SUCCESS and _FAILURE for most, if not all of the actions being dispatched. So I've compiled here a few of the utility functions that I created in my personal projects.
 
 ## Usage
 

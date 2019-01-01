@@ -19,7 +19,7 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var THREE_STATE_ACTION = ['PENDING', 'SUCCESS', 'FAILURE']; // actionTypes :: Object [String] -> Object Object String
+var THREE_STATE_ACTION = ['PENDING', 'SUCCESS', 'FAILURE']; // actionTypes :: Object [String] -> Object (Object String)
 
 exports.THREE_STATE_ACTION = THREE_STATE_ACTION;
 
@@ -31,7 +31,7 @@ var actionTypes = function actionTypes(names) {
 
     return _objectSpread({}, obj, _defineProperty({}, key, (0, _utils.groupSubActions)(key, actions)));
   }, {});
-}; // createPartialReducer :: (Object, Action, Object (* -> State))
+}; // createPartialReducer :: (ActionType, Object (* -> State)) -> (State, Action) -> State
 
 
 exports.actionTypes = actionTypes;
