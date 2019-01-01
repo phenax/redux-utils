@@ -12,12 +12,12 @@ export const getActionName = (name, nest, prefix = '@') =>
   `${prefix}${name.toLowerCase()}/${nest && nest.length ? nest.join('/') : DEFAULT}`;
 
 // ActionType :: (String, [String], [String]) -> ActionType
-export const ActionType = (name, nest, subTypes) => ({
-  _: getActionName(name, [...(nest || []), DEFAULT]),
+export const ActionType = (name, nest = [], subTypes) => ({
+  _: getActionName(name, [...nest, DEFAULT]),
   is: type => getActionName(name, nest).indexOf(type) === 0,
   has: subType => subTypes.indexOf(subType) !== -1,
   action: subNest => getActionName(name, [ ...nest, ...subNest ]),
-  [TYPE]: getActionName(name, nest || []),
+  [TYPE]: getActionName(name, nest),
 });
 
 // groupSubActions :: (String, [String]) -> ActionType
