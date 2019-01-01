@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.mergeReducers = exports.createPartialReducer = exports.actionTypes = exports.THREE_STATE_ACTION = void 0;
+exports.taggedSum = exports.mergeReducers = exports.createPartialReducer = exports.actionTypes = exports.THREE_STATE_ACTION = void 0;
 
 var _utils = require("./utils");
 
@@ -69,3 +69,26 @@ var mergeReducers = function mergeReducers() {
 };
 
 exports.mergeReducers = mergeReducers;
+var TYPE = '@@type'; // taggedSum :: (String, Object [String]) -> SumType
+
+var taggedSum = function taggedSum(name, types) {
+  return _objectSpread({
+    is: function is(typeName) {
+      return typeName === name;
+    }
+  }, Object.keys(types).reduce(function (acc, key) {
+    return _objectSpread({}, acc, _defineProperty({}, key, function () {
+      var _ref3;
+
+      for (var _len2 = arguments.length, data = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        data[_key2] = arguments[_key2];
+      }
+
+      return _ref3 = {}, _defineProperty(_ref3, TYPE, key), _defineProperty(_ref3, "cata", function cata(p) {
+        return typeof p[key] === 'function' ? p[key].apply(p, data) : p._.apply(p, data);
+      }), _ref3;
+    }));
+  }, _defineProperty({}, TYPE, name)));
+};
+
+exports.taggedSum = taggedSum;

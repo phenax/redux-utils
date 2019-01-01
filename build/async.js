@@ -3,11 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.cata = exports.toPromiseResponse = exports.withResponse = exports.Response = void 0;
+exports.fetchJson = exports.cata = exports.toPromiseResponse = exports.toPromise = exports.withResponse = exports.Response = void 0;
 
-var _daggy = require("daggy");
+var _Async = require("crocks/Async");
 
-var Response = (0, _daggy.taggedSum)('Response', {
+var _index = require("./index");
+
+var Response = (0, _index.taggedSum)('Response', {
   Success: ['data'],
   Failure: ['error']
 }); // withResponse :: Async a -> Async.Resolved (Response a)
@@ -16,14 +18,21 @@ exports.Response = Response;
 
 var withResponse = function withResponse(task) {
   return task.coalesce(Response.Failure, Response.Success);
-}; // toPromiseResponse :: (...a -> Async b) -> (...a -> Promise b)
+}; // toPromise :: Async a -> Promise a
 
 
 exports.withResponse = withResponse;
 
+var toPromise = function toPromise(x) {
+  return x.toPromise();
+}; // toPromiseResponse :: (...a -> Async b) -> (...a -> Promise b)
+
+
+exports.toPromise = toPromise;
+
 var toPromiseResponse = function toPromiseResponse(fn) {
   return function () {
-    return withResponse(fn.apply(void 0, arguments)).toPromise();
+    return toPromise(withResponse(fn.apply(void 0, arguments)));
   };
 }; // cata :: Object (...a -> b) -> Catamorphism a -> b
 
@@ -34,6 +43,13 @@ var cata = function cata(p) {
   return function (t) {
     return t.cata(p);
   };
-};
+}; // fetchJson :: (String, Request) -> Async *
+
 
 exports.cata = cata;
+var fetchJson = (0, _Async.fromPromise)(function (url, req) {
+  return fetch(url, req).then(function (res) {
+    return res.json();
+  });
+});
+exports.fetchJson = fetchJson;

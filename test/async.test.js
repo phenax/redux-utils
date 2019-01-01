@@ -1,4 +1,4 @@
-import { cata, withResponse, toPromiseResponse } from '../src/async';
+import { cata, withResponse, toPromiseResponse, fetchJson } from '../src/async';
 import { afterDelayOf } from './utils';
 
 describe('withResponse', () => {
@@ -50,5 +50,17 @@ describe('toPromiseResponse', () => {
           done();
         },
       }));
+  });
+});
+
+describe('fetchJson', () => {
+  window.fetch = (url, data) => Promise.resolve({ json: () => Promise.resolve(data) });
+
+  it('should make the request and resolve with the passed data', done => {
+    fetchJson('/fake-url', { hello: 'world' })
+      .fork(done, data => {
+        expect(data).toEqual({ hello: 'world' });
+        done();
+      });
   });
 });

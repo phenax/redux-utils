@@ -26,3 +26,19 @@ export const createPartialReducer = (subType, getReducerPattern) => (state, acti
 // mergeReducers :: (...Reducer) -> Reducer
 export const mergeReducers = (...reducers) => (state, action) =>
   reducers.reduce((newState, reducer) => reducer(newState, action), state);
+
+
+const TYPE = '@@type';
+// taggedSum :: (String, Object [String]) -> SumType
+export const taggedSum = (name, types) => ({
+  is: typeName => typeName === name,
+  ...Object.keys(types).reduce((acc, key) => ({
+    ...acc,
+    [key]: (...data) => ({
+      [TYPE]: key,
+      cata: p => typeof p[key] === 'function'
+        ? p[key](...data)
+        : p._(...data)
+    }),
+  }), { [TYPE]: name }),
+});
