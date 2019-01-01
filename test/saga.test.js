@@ -1,5 +1,5 @@
 import { runSaga } from 'redux-saga';
-import { cata } from '../src/async';
+import { cata } from '../src';
 import { callAsync, putResponse } from '../src/saga';
 import { afterDelayOf } from './utils';
 

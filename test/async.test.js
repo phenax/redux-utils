@@ -1,4 +1,5 @@
-import { cata, withResponse, toPromiseResponse, fetchJson } from '../src/async';
+import { cata } from '../src';
+import { withResponse, toPromiseResponse, fetchJson } from '../src/async';
 import { afterDelayOf } from './utils';
 
 describe('withResponse', () => {

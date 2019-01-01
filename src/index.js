@@ -61,3 +61,6 @@ export const taggedSum = (name, types, methods) => ({
     },
   }), { [TYPE]: name }),
 });
+
+// cata :: Object (...a -> b) -> Catamorphism a -> b
+export const cata = p => t => t.cata(p);
