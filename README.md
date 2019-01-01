@@ -82,8 +82,7 @@ const userReducer = mergeReducers(addUserReducer, listUserReducer);
 ## Usage with redux-saga and crocks
 
 ```js
-import { put } from 'redux-saga/effects';
-import { callAsync } from '@phenax/redux-utils/saga';
+import { callAsync, putResponse } from '@phenax/redux-utils/saga';
 
 // fetchUsers :: Params -> Async [User]
 
@@ -92,9 +91,6 @@ function* listUsersSaga({ payload: { params } }) {
 
   const response = yield callAsync(fetchUsers, params);
 
-  yield put(response.cata({
-    Success: userList => ({ type: types.USERS.LIST.SUCCESS, payload: userList }),
-    Failure: error => ({ type: types.USERS.LIST.FAILURE, payload: error })
-  }));
+  yield putResponse(types.USERS.LIST, response);
 }
 ```
