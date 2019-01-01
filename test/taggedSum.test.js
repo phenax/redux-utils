@@ -8,8 +8,8 @@ describe('taggedSum', () => {
     });
 
     expect(T['@@type']).toBe('T');
-    expect(T.A()['@@type']).toBe('A');
-    expect(T.B()['@@type']).toBe('B');
+    expect(T.A()['@@type']).toBe('T.A');
+    expect(T.B()['@@type']).toBe('T.B');
   });
 
   it('should create the required constructors on the object', () => {
@@ -26,8 +26,11 @@ describe('taggedSum', () => {
     const T = taggedSum('T', { A: [] });
     const a = T.A();
 
+    expect(T.is(T)).toBe(true);
     expect(T.is('T')).toBe(true);
+    expect(T.is()).toBe(false);
     expect(a.is('T')).toBe(true);
+    expect(a.is(T.A())).toBe(true);
     expect(a.is('T.A')).toBe(true);
     expect(a.is('T.B')).toBe(false);
     expect(a.is('8273yrwisfehd')).toBe(false);

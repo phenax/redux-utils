@@ -27,17 +27,24 @@ export const createPartialReducer = (subType, getReducerPattern) => (state, acti
 export const mergeReducers = (...reducers) => (state, action) =>
   reducers.reduce((newState, reducer) => reducer(newState, action), state);
 
+
+const typeName = (name, key) => `${name}.${key}`;
+
 // taggedSum :: (String, Object [String]) -> SumType
 export const taggedSum = (name, types) => ({
-  is: typeName => typeName === name,
+  is: type => type && (type === name || type[TYPE] === name) || false,
   ...Object.keys(types).reduce((acc, key) => ({
     ...acc,
     [key]: (...data) => ({
-      [TYPE]: key,
+      [TYPE]: typeName(name, key),
       cata: p => typeof p[key] === 'function'
         ? p[key](...data)
         : p._(...data),
-      is: type => type === name || type === `${name}.${key}`,
+      is: type => type && (
+        type === name ||
+        type === typeName(name, key) ||
+        type[TYPE] === typeName(name, key)
+      ) || false,
     }),
   }), { [TYPE]: name }),
 });
