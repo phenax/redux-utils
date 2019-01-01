@@ -1,4 +1,4 @@
-import { last, toTuplePairs, groupSubActions } from './utils';
+import { TYPE, last, toTuplePairs, groupSubActions } from './utils';
 
 export const THREE_STATE_ACTION = ['PENDING', 'SUCCESS', 'FAILURE'];
 
@@ -27,8 +27,6 @@ export const createPartialReducer = (subType, getReducerPattern) => (state, acti
 export const mergeReducers = (...reducers) => (state, action) =>
   reducers.reduce((newState, reducer) => reducer(newState, action), state);
 
-
-const TYPE = '@@type';
 // taggedSum :: (String, Object [String]) -> SumType
 export const taggedSum = (name, types) => ({
   is: typeName => typeName === name,

@@ -1,4 +1,5 @@
 export const DEFAULT = '$$';
+export const TYPE = '@@type';
 
 // last :: [a] -> a
 export const last = a => a[a.length - 1];
@@ -16,6 +17,7 @@ export const ActionType = (name, nest, subTypes) => ({
   is: type => getActionName(name, nest).indexOf(type) === 0,
   has: subType => subTypes.indexOf(subType) !== -1,
   action: subNest => getActionName(name, [ ...nest, ...subNest ]),
+  [TYPE]: getActionName(name, nest || []),
 });
 
 // groupSubActions :: (String, [String]) -> ActionType
